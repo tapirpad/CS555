@@ -1,0 +1,150 @@
+==================================================================================
+ 	lesson00 	linux/bash/intro: Introduction to Bash
+==================================================================================
+https://swcarpentry.github.io/shell-novice/
+https://unix.stackexchange.com/questions/270738/bashs-choice-operator-vs-reserved-word#340270
+http://www.tldp.org/LDP/abs/html/exit-status.html
+http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html
+https://github.com/base16-builder/base16-builder
+https://github.com/nojhan/liquidprompt
+https://github.com/arialdomartini/oh-my-git
+
+==================================================================================
+ 	lesson01 	linux/bash/data: Processing Data Streams
+==================================================================================
+https://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/
+https://www.thegeekstuff.com/2013/12/xargs-examples/
+http://www.grymoire.com/Unix/Sed.html
+https://developer.ibm.com/tutorials/l-awk1/
+http://sparky.rice.edu/~hartigan/awk.html
+https://www.gnu.org/software/gawk/manual/html_node/index.html
+
+==================================================================================
+ 	lesson02 	linux/filesystem: Conventions of the Linux File System
+==================================================================================
+https://docstore.mik.ua/orelly/unix2.1/upt/ch22_02.htm
+https://www.unix.com/tips-and-tutorials/19060-unix-file-permissions.html
+
+==================================================================================
+ 	lesson03 	linux/bash/format: Formatting Text
+==================================================================================
+https://misc.flogisoft.com/bash/tip_colors_and_formatting
+
+==================================================================================
+ 	lesson04 	indev/git/intro: Introduction to Git
+==================================================================================
+
+==================================================================================
+ 	lesson05 	indev/git/branch: Branching with Git
+==================================================================================
+https://www.atlassian.com/git/tutorials/merging-vs-rebasing
+https://nvie.com/posts/a-successful-git-branching-model/
+https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+https://jeffkreeftmeijer.com/git-flow/
+http://endoflineblog.com/gitflow-considered-harmful
+http://scottchacon.com/2011/08/31/github-flow.html
+https://githowto.com/aliases
+
+==================================================================================
+ 	lesson06 	indev/git/collab: Collaborating using Git
+==================================================================================
+https://stackoverflow.com/questions/11041729/why-does-github-recommend-https-over-ssh#11041782
+https://github.com/busyloop/lolcat/issues/80
+
+==================================================================================
+ 	lesson07 	indev/git/advanced: Git Hooks and Workflow Management
+==================================================================================
+https://githooks.com/
+http://omerkatz.com/blog/2013/2/15/git-hooks-part-1-the-basics
+https://www.atlassian.com/git/tutorials/git-hooks
+http://scottchacon.com/2011/08/31/github-flow.html
+https://guides.github.com/introduction/flow/
+https://blogs.technet.microsoft.com/devops/2016/06/21/a-git-workflow-for-continuous-delivery/
+http://endoflineblog.com/oneflow-a-git-branching-model-and-workflow
+https://hackernoon.com/still-using-gitflow-what-about-a-simpler-alternative-74aa9a46b9a3
+https://news.ycombinator.com/item?id=12941997
+
+==================================================================================
+ 	lesson08 	indev/compile: Compiling with gcc and clang
+==================================================================================
+https://developers.redhat.com/blog/2018/03/21/compiler-and-linker-flags-gcc/
+https://www.reddit.com/r/programming/comments/861ad8/recommended_compiler_and_linker_flags_for_gcc/
+https://gcc.gnu.org/onlinedocs/gcc-8.1.0/gcc/C_002b_002b-Dialect-Options.html#C_002b_002b-Dialect-Options
+
+==================================================================================
+ 	lesson09 	indev/autotools: GNU Make and Autotools
+==================================================================================
+https://ngnghm.github.io/blog/2016/04/26/chapter-9-build-systems/
+https://www.gnu.org/software/make/
+https://www.gnu.org/software/automake/manual/html_node/index.html
+https://www.gnu.org/software/automake/manual/html_node/Creating-amhello.html
+https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+https://github.com/thehackerwithin/illinois/blob/master/make.md
+
+==================================================================================
+ 	lesson10 	indev/gradle: Gradle Builds
+                indev/tdd: Test-Driven Development
+==================================================================================
+While GNU Autotools (indev/autotools) is a ubiquitous and well-supported suite on essentially every platform, a more sophisticated build system can be helpful for managing complex software builds. There are several options, ranging from CMake and SCons on the more manual side to full-featured packages like Apache Maven for Java, Meson for C/C++/D/Fortran/Java/Rust, and Microsoft Team Foundation Server for their Visual Studio products. In this lesson, we will examine Gradle, which uses a domain-specific language to configure builds. Gradle was designed to be suitable for multiple projects and across platforms and languages (primarily Java, Scala, and C/C++).
+
+https://katyhuff.github.io/python-testing/09-tdd/
+https://katyhuff.github.io/python-testing/
+https://swcarpentry.github.io/python-novice-inflammation/08-defensive/
+https://www.youtube.com/watch?v=yACtdj1_IxE
+https://plato.stanford.edu/entries/computer-science/#Veri
+
+==================================================================================
+ 	lesson11 	indev/ci: Continuous Integration
+                indev/codecov: Code Coverage
+==================================================================================
+https://katyhuff.github.io/python-testing/
+https://travis-ci.org/
+https://ideas-productivity.org/events/hpc-best-practices-webinars/#webinar023
+
+==================================================================================
+ 	lesson12 	indev/debug: Debugging with gdb
+==================================================================================
+
+==================================================================================
+ 	lesson13 	indev/profile: Performance Profiling
+                devops/code-review: Code Review (Optional)
+==================================================================================
+
+==================================================================================
+lesson14 	foss/proj-mgmt
+            foss/licensing: Software & Content Licensing
+            foss/arch: Principles of Software Architecture
+==================================================================================
+
+==================================================================================
+ 	lesson15 	indev/v&v: Software Verification & Validation
+==================================================================================
+
+==================================================================================
+ 	lesson16 	devops/docker/intro: Using Containers
+==================================================================================
+https://2016-oslo-repeatability.readthedocs.io/en/latest/docker.html
+https://github.com/nds-org/developer-tutorial/blob/master/docker-101/README.md
+http://jimhoskins.com/2013/07/27/remove-untagged-docker-images.html
+https://thenewstack.io/methods-dealing-container-storage/
+
+DevOps & Cloud Computing
+2019-10-23 	lesson16 	devops/docker/intro: Using Containers 		2019-10-25
+2019-10-28 	lesson17 	devops/docker/image: Developing with Images
+                        devops/ansible: Automating Setup 		2019-11-01
+2019-10-30 	lesson18 	devops/cloud/k8s: Kubernetes 		2019-11-01
+2019-11-04 	lesson19 	devops/cloud/aws/server: Amazon Web Services for Servers 		2019-11-08
+2019-11-06 	lesson20 	devops/cloud/aws/lambda: Amazon Web Services for Microservices 		2019-11-08
+2019-11-11 	pres1 	    foss/architecture: Presentations on Open-Source Architecture 		2019-11-11
+2019-11-13 	pres2 	    foss/architecture: Presentations on Open-Source Architecture 		2019-11-13
+			mp4::devops 	2019-11-22
+Miscellaneous
+2019-11-18 	lesson21 	devops/cloud/azure/intro: Microsoft Azure 		2019-11-22
+2019-11-20 	lesson22 	markup/markdown: Text Markup with Markdown
+                        markup/yaml: Data Markup with YAML 		2019-11-22
+2019-12-02 	lesson23 	ui/a11y: Accessibility 		2019-12-06
+2019-12-04 	lesson24 	ui/encoding: Text Encoding & Unicode 		2019-12-06
+2019-12-09 	lesson25 	ui/i18n: Internationalization 		2019-12-13
+2019-12-11 	lesson26 	ui/d11n/man: Unix/Linux-Compatible Documentation 		2019-12-13
+			mp5::i18n 	2019-12-13
+

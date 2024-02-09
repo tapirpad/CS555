@@ -1,0 +1,523 @@
+\documentclass[11pt, letterpaper, hidelinks]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{ragged2e}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{pgf,tikz}
+\usepackage[shortlabels]{enumitem}
+\usepackage{color}
+\usepackage{pgfplots}
+\usepackage[margin=1in, headheight=13.6pt]{geometry}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage{titlesec}
+\usepackage{stmaryrd}
+
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\pagestyle{fancy}
+
+% Code listing configuration
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    %numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+%\author{Ignasius Pradipta Anugraha}
+%\title{CS 420 - Machine Problem \#1}
+
+% Nice mathy squares
+\newcommand*{\QEDB}{\hfill\ensuremath{\blacksquare}}
+\newcommand*{\QEDA}{\hfill\ensuremath{\square}}
+
+% This is  how you declare a math operator (so that it shows up as not italic in math mode)
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\di}{dim}
+\DeclareMathOperator{\R}{R}
+%\DeclareMathOperator*{\sup}{Sup}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% All these will have the same counter
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+% These two will have a different counter
+\newtheorem{remark}{Remark}[section]
+\newtheorem{example}[remark]{Example}
+
+%This command puts a basically write f(t) if given \xlr{f}{t}
+\newcommand{\xlr}[2]{#1 \left(#2\right)}
+\newcommand{\clr}[2]{#1 \left\{ #2 \right\}}
+
+% This write derivative operator with good spacing
+\newcommand{\ud}{\,\mathrm{d}}
+
+% Number only last equation
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% Times symbol
+\newcommand{\x}{\, \times}
+% Omega symbol
+\newcommand{\w}{\, \omega}
+% Inner product bracket symbol
+\newcommand{\li}{\, \langle}
+\newcommand{\ri}{\, \rangle}
+
+% This command define norm symbol
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+% This command define modulus (absolute) symbol
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+
+% This commands writes the bold R or C used to denote the commplexes or reals
+\newcommand {\mb}[1]{\ensuremath{\mathbb #1}}
+
+\newcommand {\vp}[0]{\varphi}
+
+% This commands writes the bold R or C used to denote the commplexes or reals
+\newcommand {\hb}[1]{\boldsymbol{\hat{\text{$#1$}}}}
+
+% This commands writes the bold letter for matrix
+\newcommand {\mat}[1]{\boldsymbol #1}
+
+% Set so equation numbering is according to the section
+%\numberwithin{equation}{section}
+
+% Add prefix to the section number
+\makeatletter
+% we use \prefix@<level> only if it is defined
+\renewcommand{\@seccntformat}[1]{%
+    \ifcsname prefix@#1\endcsname
+        \csname prefix@#1\endcsname
+    \else
+        %	\csname the#1\endcsname\quad
+        %	\csname \endcsname\quad
+    \fi}
+% define \prefix@section
+%\newcommand\prefix@section{\underline{Problem \thesection} }
+\makeatother
+
+% Set the vertical spacing for IEEEeqnarray environment
+\renewcommand*{\IEEEeqnarraydecl}{\setlength{\jot}{3\IEEEnormaljot}}% twice the normal value of \jot
+
+% New environment for align
+\newenvironment{shiftedflalign}{%
+    \start@align\tw@\st@rredfalse\m@ne%
+    \hskip\parindent
+}{%
+    \endalign
+}
+\newenvironment{shiftedflalign*}{%
+    \start@align\tw@\st@rredtrue\m@ne
+    \hskip\parindent
+}{%
+    \endalign
+}
+\makeatother
+
+% Set the vertical spacing for align environment
+\makeatletter
+\newlength\minalignvsep
+\def\align@preamble{%
+    &\hfil
+    \setboxz@h{\@lign$\m@th\displaystyle{##}$}%
+    \ifnum\row@>\@ne
+        \ifdim\ht\z@>\ht\strutbox@
+            \dimen@\ht\z@
+            \advance\dimen@\minalignvsep
+            \ht\strutbox\dimen@
+        \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \tabskip\z@skip
+    &\setboxz@h{\@lign$\m@th\displaystyle{{}##}$}%
+    \ifnum\row@>\@ne
+        \ifdim\ht\z@>\ht\strutbox@
+            \dimen@\ht\z@
+            \advance\dimen@\minalignvsep
+            \ht\strutbox@\dimen@
+        \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \hfil
+    \tabskip\alignsep@
+}
+\makeatother
+\minalignvsep.15em
+
+% Title format
+%\titleformat{\section}[block]{\color{blue}\Large\bfseries\filcenter}{}{1em}{}
+%\titleformat{\subsection}[hang]{\bfseries}{}{1em}{}
+
+% Header and footer information
+% !! UPDATE THIS INFORMATION !!
+\lhead{CS 555 - Spring 2020 - University of Illinois at Urbana-Champaign}
+\rhead{Project 2}
+\lfoot{Author: Anugraha, Ignasius Pradipta}
+\rfoot{NetID: iwijaya2}
+
+%=====================================================================
+
+\begin{document}
+
+\section{1. Introduction}
+In practical problems, we frequently encounter problem with non-regular domain such as re-entrant corner. In this case, the regularity of the solution is deteriorated. For example, when simulating crack, we see that the first derivative of the solution field blows up at the crack tip. Tt was observed that the convergence rate of finite element solution deteriorate for problem with this type of solution. One way to address this problem is to adaptively perform local grid refinement. In order to do that we need to compute an a posteriori error estimate to indicate which part of the grid induces large errors. Using this information we can then locally refine the corresponding grid.
+
+\subsection{1.1 PDE Solver}
+In all simulation, finite element method with quadratic triangluar element will be used.
+
+\section{2. A Posteriori Error Estimates: Residual-Based}
+The following residual based error estimate will be used.
+\begin{align*}
+    R_T(u_h)   & = \Delta u_h + f \qquad \text{for} \quad T \in \mathcal{T}_h                                                                                                 \\
+    R_e(u_h)   & = \left\llbracket \frac{\partial u_h}{\partial n} \right\rrbracket   \qquad \text{for} \quad e \in \Gamma_h                                                  \\
+    \eta_{T,R} & = \left\{ h_T^2 \norm{R_T}_{0,T}^2 + \frac{1}{2} \sum_{e\subset \partial T} h_e \norm{R_e}_{0,e}^2 \right\}^{1/2} \qquad\text{for} \quad T \in \mathcal{T}_h \\
+    \eta_R     & = \left\{ \sum_{T\in \mathcal{T}_h} h^2_T \norm{R_T}_{0,T}^2 + \sum_{e\subset \Gamma_h} h_e \norm{R_e}_{0,e}^2  \right\}^{1/2}
+\end{align*}
+where $u_h$ is finite element solution, $h_T$ is element size, $h_e$ is edge size, $T$ is a triangle element, and $\mathcal{T}$ is a shape-regular triangulation. For this residual based estimator, there exist a constant $c=c(\Omega, \kappa)$ such that for all $ T \in \mathcal{T}_h $,
+\begin{align*}
+     & \norm{u-u_h}_{1,\Omega} \le c\eta_R  \numberthis \label{reliability}                                                                                                 \\
+     & \eta_{T,R}\le c \left\{ \norm{u-u_h}_{1,\omega_T}^2 + \sum_{T^{\prime} \subset \omega_T} h^2_T \norm{f-f_h}_{0,T^{\prime}}^2 \right\} \numberthis \label{efficiency}
+\end{align*}
+where $u$ is the exact solution and
+\begin{align*}
+    \omega_T = \cup \left\{ T^{\prime} \in \mathcal{T} \;\; | \;\; T \text{ and } T^{\prime} \text{ have a common edge or } T^{\prime}=T \right\}
+\end{align*}
+The upper bound means that the estimator is reliable and the lower bound means that the estimator is also efficient.
+
+\subsection{2.1 Smooth problem}
+Now, we will test this estimate with the following BVP in a domain $\Omega = [-1,1]\x[-1,1]$.
+\begin{align*}
+    \Delta u + f & = 0 \\
+    u(x,-1)      & = 0
+\end{align*}
+where
+\begin{align*}
+    f(x,y) = 6y
+\end{align*}
+The solution of this problem is given by
+\begin{align*}
+    u(x,y) = -y^3 + 3y + 2
+\end{align*}
+Three mesh refinements will be used. The mesh, error with respect to exact solution, and error estimate are shown in Fig.\ref{fig:rec_errmap1}-\ref{fig:rec_errmap3}.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_errormap1.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 1}
+    \label{fig:rec_errmap1}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_errormap2.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 2}
+    \label{fig:rec_errmap2}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_errormap3.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 3}
+    \label{fig:rec_errmap3}
+\end{figure}
+
+We can see that the estimate is predicting high error in the region where the derivative of of the solution is high. The finite element solution is given in Fig.\ref{fig:rec_sol}.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_sol.png}
+    \centering
+    \caption{Finite element solution for three different refinements}
+    \label{fig:rec_sol}
+\end{figure}
+
+The efficiency will be be shown here. Using $c=200$, we plot
+
+\begin{align*}
+    R_{eff} =  c \left\{ \norm{u-u_h}_{1,\omega_T}^2 + \sum_{T^{\prime} \subset \omega_T} h^2_T \norm{f-f_h}_{0,T^{\prime}}^2 \right\} - \eta_{T,R} \numberthis \label{eff}
+\end{align*}
+
+Fig.\ref{fig:rec_eff_check} shows the plot of $R_{eff}$. The values are all positive, that means eq.\ref{efficiency} is satisfied.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_eff_check.png}
+    \centering
+    \caption{Efficiency of error estimator}
+    \label{fig:rec_eff_check}
+\end{figure}
+
+Next, we want to show that the reliability claim is also satisfied. Fig.\ref{fig:rec_error} shows the evolution of error and the estimate. We can see that the estimate has the roughly the same slope as the error and provide upper bound although quite loose when we incorporate constant $c$. This plot also shows that the FEM solver has optimal convergence (convergence rate is two in the $H_1$ norm).
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_rec_error.png}
+    \centering
+    \caption{Error evolution in $H_1$ norm}
+    \label{fig:rec_error}
+\end{figure}
+
+At last, we also check the convergence rate with relative error in the $l_2$ norm. It is indeed has optimal convergence.
+
+\begin{figure}[H]
+    \includegraphics[width=8cm]{plot_rec_conv.png}
+    \centering
+    \caption{Relative error in $l_2$ norm}
+    \label{fig:room_plan}
+\end{figure}
+
+\subsection{2.1 Domain with re-entrant corner}
+Now consider the two-dimensional domain with re-entrant corner shown in Fig.\ref{fig:domain_corner}.
+
+\begin{figure}[H]
+    \includegraphics[width=3cm]{plot_domain_corner.png}
+    \centering
+    \caption{Domain with re-entrant corner}
+    \label{fig:domain_corner}
+\end{figure}
+
+Consider laplace problemin a domain is given by
+\begin{align*}
+    \Omega = \left\{ (x,y) \in \mb{R} \;\; | \;\; x^2+y^2 < 1, x<0 \text{or} y>0 \right\}
+\end{align*}
+The BVP is given by
+\begin{align*}
+    \Delta u        & = 0 \qquad \text{in} \; \Omega                                                               \\
+    u(e^{i\varphi}) & = \sin\left(\frac{2}{3}\varphi\right) 	\qquad \text{for} \quad 0\le\varphi\le \frac{3}{2}\pi \\
+    u               & = 0 \qquad \text{elsewhere on } \partial \Omega
+\end{align*}
+The exact solution to this problem is
+\begin{align*}
+    u(z) & = \text{Im}\left( w(z) \right) \\
+    w(z) & = z^{2/3}                      \\
+    z    & = x + iy
+\end{align*}
+Since $w^{\prime}(z)=2/3z^{-1/3}$, the first derivative of u are not bounded as $z\rightarrow 0$. Three different mesh refinement will be used to solve this problem. For all refinements, we use $700$ element around the curved boundary to minimize error from approximation geometry of the domain. The meshes, error, and error estimates are shown in Fig.\
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_errormap1.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 1}
+    \label{fig:circ_errormap1}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_errormap2.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 2}
+    \label{fig:circ_errormap2}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_errormap3.png}
+    \centering
+    \caption{Mesh, error, and error estimate for mesh 3}
+    \label{fig:circ_errormap3}
+\end{figure}
+
+We can see that high error concentration in the region with singularity. In this case, the estimator performed quite well to predict the high error regions. The solution of this problem with several different refinements are shown in Fig.\ref{fig:circ_sol}.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_sol.png}
+    \centering
+    \caption{Finite element solution for three different refinements}
+    \label{fig:circ_sol}
+\end{figure}
+
+Next, we check efficiency of the estimator the same way as in the previous section. Fig.\ref{fig:circ_eff_check} shows the plot of $R_{eff}$ according to eq.\ref{eff} with $c=200$. This shows that the estimator is indeed satisfies eq.\ref{efficiency}.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_eff_check.png}
+    \centering
+    \caption{Efficiency of error estimator}
+    \label{fig:circ_eff_check}
+\end{figure}
+
+We also check the reliability of the error estimator. Using the same value of $c$ as the one used for efficiency, we can see in Fig.\ref{fig:circ_error} that the estimator is indeed providing upper bound for the error.
+
+\begin{figure}[H]
+    \includegraphics[width=16cm]{plot_circ_error.png}
+    \centering
+    \caption{Error evolution in $H_1$ norm}
+    \label{fig:circ_error}
+\end{figure}
+From Fig.\ref{fig:circ_error} it seems the real error decrease very slowly. In Fig.\ref{fig:circ_conv}, we can see that we do not have optimal convergence. This is because the regularity of the solution of this problem. The high error was concentrated in one small region such that refining the whole domain doesn't do much improvement. We will address this problem using adaptive refinement in the next section.
+\begin{figure}[H]
+    \includegraphics[width=8cm]{plot_circ_conv.png}
+    \centering
+    \caption{Relative error in the $l_2$ norm}
+    \label{fig:circ_conv}
+\end{figure}
+
+\section{3. Adaptive Refinement in Finite Element Method}
+In this section, we will see how adaptive finite element method address the convergence issue in the previous section. The strategy is to have an initial mesh, run the simulation with the mesh, do error estimate, and locally refine the mesh in the region where the estimator gives high error. The following algorithm from Rivara (1984) will be used. Let $\mathcal{T}_0$ be any conforming initial triangulation and let $\bar{\mathcal{T}}_0 \subset \mathcal{T}_0$ be the set of triangles to be refined. Then a new (locally) refined triangulation is obtained as follows:
+
+\begin{enumerate}
+    \item Bisect $T$ by its longest side, for each $T \in \bar{\mathcal{T}}_0$.
+    \item Find $R_1 \subset \mathcal{T}_0$ the set of non-conforming triangles generated in step 1. Set $k \leftarrow 1$.
+    \item For each $T \in R_k$ (with the non-conforming point $P\in T$): (a) bisect $T$ by the longest side; (b) if $P$ is not over the longest side of $T$, then join $P$ with the midpoint of the longest side.
+    \item Let $\mathcal{T}_0^k$ be the triangulation generated in step 3. Find $R_{k+1} \subset \mathcal{T}_0^k$ the set of non-conforming triangles generated in step 3.
+    \item Is cardinality of $R_{k+1}$ equal to $0$? (a) If yes, stop. The conforming triangulation was obtained. (b) If not, set $k\leftarrow k+1$ and go to 3.
+\end{enumerate}
+
+Next, we will solve the following Laplace problem in a V-notched domain $\Omega$.
+\begin{align*}
+    \Delta u & = 0                                    \\
+    u(x,-1)  & = 0                                    \\
+    u(x,1)   & = 0 \;\;\; \qquad \text{for} \; x\ge 0 \\
+    u(x,1)   & = 0.5 \qquad \text{for} \; x<0
+\end{align*}
+The domain and initial mesh is shown in Fig.\ref{fig:adapt_err_00}. This figure also show the error estimate. Based on this error estimate, we can set a threshold to determine which element needs to be refined. For this case, the threshold is
+\begin{align*}
+    \eta_{T,R} > 0.5 \left( \max_{T\in \mathcal{T}_h} \eta_{T,R} \right)
+\end{align*}
+Which means element with more than fifty percent of maximum element error in the domain will be refined
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_00.png}
+    \centering
+    \caption{Initial mesh, error estimate, and list of elements that needs refinement}
+    \label{fig:adapt_err_00}
+\end{figure}
+Fig.\ref{fig:adapt_err_03}-\ref{fig:adapt_err_19} shows several stages of the refinement process. Let's denote the number of iteration by $k$ such that $k=1$ means the first iteration.
+
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_03.png}
+    \centering
+    \caption{Mesh, error estimate, and list of elements that needs refinement (k=3)}
+    \label{fig:adapt_err_03}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_06.png}
+    \centering
+    \caption{Mesh, error estimate, and list of elements that needs refinement (k=6)}
+    \label{fig:adapt_err_06}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_10.png}
+    \centering
+    \caption{Mesh, error estimate, and list of elements that needs refinement (k=10)}
+    \label{fig:adapt_err_10}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_16.png}
+    \centering
+    \caption{Mesh, error estimate, and list of elements that needs refinement (k=16)}
+    \label{fig:adapt_err_16}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=15cm]{plot_adapt_err_19.png}
+    \centering
+    \caption{Mesh, error estimate, and list of elements that needs refinement (k=19)}
+    \label{fig:adapt_err_19}
+\end{figure}
+We can see that in the beginning, the refinement focused on elements near the notch. Eventually, elements near the notch become small enough that the error of the larger elements away from notches become comparable to error around the notch. At this point, the algorithm starts refining bigger elements away from the notch while still refining elements around the notch while doing so. The finite element solution of this problem is shown in Fig.
+
+\begin{figure}[H]
+    \includegraphics[width=14cm]{plot_adapt_sol.png}
+    \centering
+    \caption{Adaptive finite elements solution for three different iteration ($k=0$, $k=10$, $k=19$)}
+    \label{fig:adapt_sol}
+\end{figure}
+
+Fig.\ref{fig:adapt_iter} shows error reduction throughout iterations. In the early iteration, the reduction is slow. It is until the elements around the notch become small enough we have better error reduction because the algorithm starts refining bigger elements away from notch.  Fig.\ref{fig:adapt_conv} shows error reduction with respect to number of dof. In 2-D, $O(N_{dof}^1) \approx O(h^{-2})$. This means, the figure shows that we achieve opqtimal convergence rate ($O(h^{2})$) with adaptive mesh refinement.
+
+\begin{figure}[H]
+    \includegraphics[width=6.5cm]{plot_adapt_iter.png}
+    \centering
+    \caption{Evolution of error throughout iterations}
+    \label{fig:adapt_iter}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=6.5cm]{plot_adapt_conv.png}
+    \centering
+    \caption{Error reduction with respect to number of dof}
+    \label{fig:adapt_conv}
+\end{figure}
+
+\section{4. Discussion}
+
+This section includes topics that have not been investigated further because of time constraint.
+
+\subsection{4.1 Time complexity}
+
+We are also concerned about time complexity of this algorithm. Fig.\ref{fig:complexity_const_nel_good} shows the required computational time for refining a varying number of elements with constant total number of elements in the domain. From this figure, it seems that the computational time depends more on the total number of elements in the domain. This may be specific to my implementation because I loop over all elements to search for nonconfoming elements. There should be a better way to implement this but here we will look at how this implementation perform. Fig.\ref{fig:complexity_const_ref_good}, shows the required computational time for varying number of total element in the domain. The complexity of this implementation is $O(N_{elem}^2)$.
+
+\begin{figure}[H]
+    \includegraphics[width=8cm]{plot_complexity_const_nel_good.png}
+    \centering
+    \caption{Computational time for varying number of refined element and constant number of total element in the domain}
+    \label{fig:complexity_const_nel_good}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=8cm]{plot_complexity_const_ref_good.png}
+    \centering
+    \caption{Computational time for constant number of refined element and varying number of total element in the domain}
+    \label{fig:complexity_const_ref_good}
+\end{figure}
+
+This is not an optimal implementation. The better way is to record neighbor elements when we do bisection and loop on this list instead of all elements. Further study will be needed to know the complexity of this algorithm with the best implementation.
+
+\subsection{4.1 Domain with cups}
+
+Although adaptive finite element can be use to address problem with re-entrant corner domain, it will not be able to address the problem where the domain has cups. In the re-entrant corner problem, the actual problem is related to efficiency. The high error is concentrated over a small region so refining in all region becomes really inefficient. This was addressed by the adaptive strategy. The source of problem for cups is different. It is a mathematical problem instead of efficiency problem. Therefore, the adaptive strategy is not the way to address it.
+
+\section{A. How to Reproduce Results}
+On the uploaded code, starting at line 1460, there are several commented function call. To run the simulation and recreate figures in the report, just un-comment the
+corresponding function and run the code.
+
+\begin{thebibliography}{2}
+
+    [1] Braess, D., (2007). Finite elements theory, fast solvers, and applications in elasticity theory. \\ \\
+
+    [2] Rivara, M.C., 1984. Algorithms for refining triangular grids suitable for adaptive and multigrid techniques. Int. J. Numer. Meth. Engng. 20, 745–756. https://doi.org/10.1002/nme.1620200412
+
+\end{thebibliography}
+
+\end{document}

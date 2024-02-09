@@ -1,0 +1,806 @@
+\documentclass[11pt, letterpaper, hidelinks]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{ragged2e}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{pgf,tikz}
+\usepackage[shortlabels]{enumitem}
+\usepackage{color}
+\usepackage{pgfplots}
+\usepackage[margin=1in, headheight=13.6pt]{geometry}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage{titlesec}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\pagestyle{fancy}
+
+% Code listing configuration
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    %numbers=left,                    
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+%\author{Ignasius Pradipta Anugraha}
+%\title{CS 420 - Machine Problem \#1}
+
+% Nice mathy squares
+\newcommand*{\QEDB}{\hfill\ensuremath{\blacksquare}}
+\newcommand*{\QEDA}{\hfill\ensuremath{\square}}
+
+% This is  how you declare a math operator (so that it shows up as not italic in math mode)
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\di}{dim}
+\DeclareMathOperator{\R}{R}
+%\DeclareMathOperator*{\sup}{Sup}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% All these will have the same counter
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+% These two will have a different counter
+\newtheorem{remark}{Remark}[section]
+\newtheorem{example}[remark]{Example}
+
+%This command puts a basically write f(t) if given \xlr{f}{t} 
+\newcommand{\xlr}[2]{#1 \left(#2\right)}
+\newcommand{\clr}[2]{#1 \left\{ #2 \right\}}
+
+% This write derivative operator with good spacing
+\newcommand{\ud}{\,\mathrm{d}}
+
+% Number only last equation
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% Times symbol
+\newcommand{\x}{\, \times}
+% Omega symbol
+\newcommand{\w}{\, \omega}
+% Inner product bracket symbol
+\newcommand{\li}{\, \langle}
+\newcommand{\ri}{\, \rangle}
+
+% This command define norm symbol
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+% This command define modulus (absolute) symbol
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+
+% This commands writes the bold R or C used to denote the commplexes or reals
+\newcommand {\mb}[1]{\ensuremath{\mathbb #1}}
+
+\newcommand {\vp}[0]{\varphi}
+
+% This commands writes the bold R or C used to denote the commplexes or reals
+\newcommand {\hb}[1]{\boldsymbol{\hat{\text{$#1$}}}}
+
+% This commands writes the bold letter for matrix
+\newcommand {\mat}[1]{\boldsymbol #1}
+
+% Set so equation numbering is according to the section
+%\numberwithin{equation}{section}
+
+% Macro for backslash
+\newcommand\bslash{\char`\\}
+
+% Add prefix to the section number
+\makeatletter
+% we use \prefix@<level> only if it is defined
+\renewcommand{\@seccntformat}[1]{%
+    \ifcsname prefix@#1\endcsname
+        \csname prefix@#1\endcsname
+    \else
+        %	\csname the#1\endcsname\quad
+        %	\csname \endcsname\quad
+    \fi}
+% define \prefix@section
+%\newcommand\prefix@section{\underline{Problem \thesection} }
+\makeatother
+
+% Set the vertical spacing for IEEEeqnarray environment
+\renewcommand*{\IEEEeqnarraydecl}{\setlength{\jot}{3\IEEEnormaljot}}% twice the normal value of \jot
+
+% New environment for align
+\newenvironment{shiftedflalign}{%
+    \start@align\tw@\st@rredfalse\m@ne%
+    \hskip\parindent
+}{%
+    \endalign
+}
+\newenvironment{shiftedflalign*}{%
+    \start@align\tw@\st@rredtrue\m@ne
+    \hskip\parindent
+}{%
+    \endalign
+}
+\makeatother
+
+% Set the vertical spacing for align environment
+\makeatletter
+\newlength\minalignvsep
+\def\align@preamble{%
+    &\hfil
+    \setboxz@h{\@lign$\m@th\displaystyle{##}$}%
+    \ifnum\row@>\@ne
+        \ifdim\ht\z@>\ht\strutbox@
+            \dimen@\ht\z@
+            \advance\dimen@\minalignvsep
+            \ht\strutbox\dimen@
+        \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \tabskip\z@skip
+    &\setboxz@h{\@lign$\m@th\displaystyle{{}##}$}%
+    \ifnum\row@>\@ne
+        \ifdim\ht\z@>\ht\strutbox@
+            \dimen@\ht\z@
+            \advance\dimen@\minalignvsep
+            \ht\strutbox@\dimen@
+        \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \hfil
+    \tabskip\alignsep@
+}
+\makeatother
+\minalignvsep.15em
+
+% Title format
+%\titleformat{\section}[block]{\color{blue}\Large\bfseries\filcenter}{}{1em}{}
+%\titleformat{\subsection}[hang]{\bfseries}{}{1em}{}
+
+% Header and footer information 
+% !! UPDATE THIS INFORMATION !!
+\lhead{CS 555 - Spring 2020 - University of Illinois at Urbana-Champaign}
+\rhead{Project 1}
+\lfoot{Author: Anugraha, Ignasius Pradipta}
+\rfoot{NetID: iwijaya2}
+
+%=====================================================================
+
+\begin{document}
+
+\section{1.An Explicit Solver}
+In this project, we will write a solver for the heat equation in a complex two dimensional domain.
+\begin{align*}
+    u_t = \Delta u + r(x) = \partial_x^2 u + \partial_y^2 u + r(x,y)   \numberthis \label{heat_eq}
+\end{align*}
+where $r(x)$ is a time constant heat sources function. The initial and boundary conditions are as follows.
+\begin{align*}
+    u(x,0)                    & = 0 \qquad  					(x \in \Omega) 			\numberthis \label{ic}                     \\
+    u(x,t)                    & = 0 \qquad  					(x \in \Gamma_W) 		\numberthis \label{bc1}                   \\
+    \hat{n}\cdot\nabla u(x,t) & = 0 \qquad  	(x \in \partial\Omega \bslash \Gamma_W)		\numberthis \label{bc2}
+\end{align*}
+The scenario is that we will simulate the heat flow in a room. In this scenario, $\Omega$ is the room, $\Gamma_W$ is window and $\partial\Omega \bslash \Gamma_W$ is wall. The specification of boundary conditions says that the outside air is at zero degrees and the wall is taken as an insulator where no heat exchange can occur. The initial temperature is taken as zero and the heater in the room is modeled as heat source. The domain is shown in Fig.\ref{fig:room_plan}. The thickness of the wall is $0.2$. There are three heaters with dimension $0.4 \x 0.4$ at $(1.6,1.6)$, $(1.2,3.9)$, and $(3.4,3.9)$.
+\begin{figure}[H]
+    \includegraphics[width=12cm]{room_plan.png}
+    \centering
+    \caption{Room plan}
+    \label{fig:room_plan}
+\end{figure}
+
+\subsection{1.1. Finite Difference Approximation}
+
+In this section, a strategy to solve the problem in 1D using finite difference will be investigated. Finite difference will be use to discretize the space. The treatment of Dirichlet and Neumann boundary conditions will be discussed and the verification with a steady state test case will be shown. The steady state equation will be considered so we can focus on the spatial discretization.
+\begin{align*}
+    \Delta u + r(x) = \partial_x^2 u + r(x) = 0  \numberthis \label{heat_steady}
+\end{align*}
+For this section, consider the domain $\Omega = \left[ 0,1 \right]$.
+\subsection{1.1.1 Second Order Finite Difference }
+
+Second order central difference will be used to approximate first and second order derivative. Consider a one dimensional grid points $\{x_i\}_{i=0}^{i=n}$ with spacing $h_x$, the second order finite difference approximation are.
+\begin{align*}
+    u^\prime_i         & = \frac{u_{i+1}-u_{i-1}}{2h_x}  \numberthis \label{fd1}         \\
+    u^{\prime\prime}_i & = \frac{u_{i+1} -2u_i + u_{i-1}}{h_x^2} \numberthis \label{fd2}
+\end{align*}
+Where $u_i \approx u(x_i)$. Using second order finite difference, \eqref{heat_steady} can be written as follows.
+\begin{align*}
+    \left[
+        \begin{array}{cccccc}
+            -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0                & ...             &                  &                  \\
+            \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0               & ...              &                  \\
+            0                & \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2} &                  &                  \\
+                             &                  & \ddots           & \ddots          & \ddots           &                  \\
+                             &                  &                  & \frac{1}{h_x^2} & -\frac{2}{h_x^2} & \frac{1}{h_x^2}  \\
+                             &                  &                  &                 & \frac{1}{h_x^2}  & -\frac{2}{h_x^2} \\
+        \end{array}
+        \right]
+    \left[
+        \begin{array}{cccccc}
+            u_0 \\ u_1 \\ u_2 \\ \vdots \\ u_{n-1} \\ u_{n} \\
+        \end{array}
+        \right]
+    = -
+    \left[
+        \begin{array}{cccccc}
+            r(x_0) \\ r(x_1) \\ r(x_2) \\ \vdots \\ r(x_{n-1}) \\ r(x_{n}) \\
+        \end{array}
+        \right]
+\end{align*}
+
+\subsection{1.1.2 Dirichlet Boundary Conditions}
+To impose Dirichlet boundary conditions for $u$ at $x_i$, we just need to change the $i^{th}$ row to match the equation $u_i = g(x_i)$ where $g(x)$ is the Dirichlet boundary condition. Consider a homogeneous Dirichlet boundary condition $g(1) = 0$. Imposing the boundary condition, the matrix equation becomes.
+\begin{align*}
+    \left[
+        \begin{array}{cccccc}
+            -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0                & ...             &                  &                 \\
+            \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0               & ...              &                 \\
+            0                & \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2} &                  &                 \\
+                             &                  & \ddots           & \ddots          & \ddots           &                 \\
+                             &                  &                  & \frac{1}{h_x^2} & -\frac{2}{h_x^2} & \frac{1}{h_x^2} \\
+                             &                  &                  &                 &                  & 1               \\
+        \end{array}
+        \right]
+    \left[
+        \begin{array}{cccccc}
+            u_0 \\ u_1 \\ u_2 \\ \vdots \\ u_{n-1} \\ u_{n} \\
+        \end{array}
+        \right]
+    = -
+    \left[
+        \begin{array}{cccccc}
+            r(x_0) \\ r(x_1) \\ r(x_2) \\ \vdots \\ r(x_{n-1}) \\ 0 \\
+        \end{array}
+        \right]
+\end{align*}
+Since the last equation is trivial, only the other equations will be solved.
+\begin{align*}
+    \left[
+        \begin{array}{ccccc}
+            -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0                & ...             &                  \\
+            \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0               &                  \\
+            0                & \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2} &                  \\
+                             &                  & \ddots           & \ddots          & \ddots           \\
+                             &                  &                  & \frac{1}{h_x^2} & -\frac{2}{h_x^2} \\
+        \end{array}
+        \right]
+    \left[
+        \begin{array}{ccccc}
+            u_0 \\ u_1 \\ u_2 \\ \vdots \\ u_{n-1}  \\
+        \end{array}
+        \right]
+    = -
+    \left[
+        \begin{array}{ccccc}
+            r(x_0) \\ r(x_1) \\ r(x_2) \\ \vdots \\ r(x_{n-1})  \\
+        \end{array}
+        \right]
+\end{align*}
+Because there are no approximation used, this treatment for Dirichlet boundary condition is expected to maintain the second order accuracy of the centered difference that is used in the interior of the domain.
+
+\subsection{1.1.3 Neumann Boundary Conditions}
+To maintain second-order accuracy, we will use a new technique known as using “ghost points”. For this technique, we assume $u(x)$ extends smoothly outside of the domain so we can make the usual second order centered approximation to the first derivative (eq.\eqref{fd1}). If $u^\prime(x_i) = \alpha$, we have
+\begin{align*}
+    u^\prime_i = \alpha = \frac{u_{i+1}-u_{i-1}}{2h_x}
+\end{align*}
+We can use this to solve the value of the extension (ghost nodes) in the positive direction.
+\begin{align*}
+    u_{i-1} = u_{i+1}-2h_x\alpha
+\end{align*}
+and in the negative direction
+\begin{align*}
+    u_{i+1} = u_{i-1}+2h_x\alpha
+\end{align*}
+We can substitute this into \eqref{fd2}. For the calculation using ghost node in the positive direction,
+\begin{align*}
+    u^{\prime\prime}_i & = \frac{u_{i+1} -2u_i + (u_{i+1}-2h_x\alpha)}{h_x^2} = \frac{2u_{i+1} -2u_i}{h_x^2} - \frac{2\alpha}{h_x} \numberthis \label{nb1}
+\end{align*}
+and in the negative direction
+\begin{align*}
+    u^{\prime\prime}_i & = \frac{(u_{i-1}+2h_x\alpha) -2u_i + u_{i-1}}{h_x^2} = \frac{2u_{i-1} -2u_i}{h_x^2} + \frac{2\alpha}{h_x} \numberthis \label{nb2}
+\end{align*}
+This results was derived using second order finite difference for first and second derivative, so it is expected that this treatment for Neumann boundary conditions will preserve the second order accuracy of centered difference that is used in the interior of the domain. \\ \\
+%
+Now, consider the previous problem with Neumann boundary condition $u^\prime(0) = 0$. This will translate to
+\begin{align*}
+    u^{\prime\prime}_0 & = \frac{2u_{1} -2u_0}{h_x^2}
+\end{align*}
+Then, combined with the Dirichlet boundary condition from Section 2.2, the system of equation becomes
+\begin{align*}
+    \left[
+        \begin{array}{ccccc}
+            -\frac{2}{h_x^2} & \frac{2}{h_x^2}  & 0                & ...             &                  \\
+            \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2}  & 0               &                  \\
+            0                & \frac{1}{h_x^2}  & -\frac{2}{h_x^2} & \frac{1}{h_x^2} &                  \\
+                             &                  & \ddots           & \ddots          & \ddots           \\
+                             &                  &                  & \frac{1}{h_x^2} & -\frac{2}{h_x^2} \\
+        \end{array}
+        \right]
+    \left[
+        \begin{array}{ccccc}
+            u_0 \\ u_1 \\ u_2 \\ \vdots \\ u_{n-1}  \\
+        \end{array}
+        \right]
+    = -
+    \left[
+        \begin{array}{ccccc}
+            r(x_0) \\ r(x_1) \\ r(x_2) \\ \vdots \\ r(x_{n-1})  \\
+        \end{array}
+        \right]
+\end{align*}
+
+\subsection{1.1.4 Verification: 1D}
+In this section we will verify whether the scheme from previous sections has second order accuracy. Consider the steady state temperature distribution that satisfies boundary condition in the previous chapters ($u_x(0)=0$ and $u(1)=0$).
+\begin{align*}
+    u(x) = 20(1-x^4)
+\end{align*}
+Notice that this satisfy the boundary condition.
+\begin{align*}
+    u_x(0) = -80(0)^3 = 0
+\end{align*}
+Substitute this to \eqref{heat_steady} to get the corresponding heat source.
+\begin{align*}
+    r(x) = -u_{xx} = 240x^2
+\end{align*}
+Several different mesh size $h$ were used to solve the problem. Let $u_i$ be the finite difference approximate solution and $u(x)$ be the true solution. The $l_{\infty}$ error for each number of grid is computed as follows.
+\begin{align*}
+    e = \max_i \abs{u_i - u(x_i)}
+\end{align*}
+The results is shown in Fig.\ref{fig:ss1D}. This shows that the implemented 1D finite difference scheme (together with the way we handle boundary condition) has second order accuracy.
+\begin{figure}[H]
+    \includegraphics[width=16cm]{ss1D.png}
+    \centering
+    \caption{Steady state solution and $l_\infty$ error for the 1D test problem}
+    \label{fig:ss1D}
+\end{figure}
+
+\subsection{1.1.5 Verification: 2D}
+
+Applying centered difference in two dimension,
+\begin{align*}
+    \Delta u(x_i,y_j) & = \partial_x^2 u(x_i,y_j) + \partial_y^2 u(x_i,y_j)                                                   \\
+                      & \approx \frac{u_{i+1,j} -2u_{i,j} + u_{i-1,j}}{h_x^2} + \frac{u_{i,j+1} -2u_{i,j} + u_{i,j-1}}{h_y^2}
+\end{align*}
+Where $i$ and $j$ are enumeration of grid points in the $x$ and $y$ direction. The same strategy as before will be used to treat Dirichlet and Neumann boundary conditions. Consider the following test case where the domain $\Omega=[0,1]\x[0,1]$.
+\begin{align*}
+    \Delta u(x,y) + r(x,y) & = 0  \numberthis \label{heat_ss2D} \\
+    u(x,0)=u(0,y)          & = 0                                \\
+    u_x(1,y)=u_y(x,1)      & = 0
+\end{align*}
+Consider the following steady state temperature distribution.
+\begin{align*}
+    u(x,y) = 20(4x-x^4)(4y-y^4)
+\end{align*}
+Notice that this satisfy the boundary condition. Substitute this to the \eqref{heat_ss2D} to get the corresponding heat source.
+\begin{align*}
+    r(x,y) = 240\left((x^2)(4y-y^4)+(4x-x^4)(y^2)\right)
+\end{align*}
+Several different mesh size $h$ were used to solve the problem. The results is shown in Fig.\ref{fig:ss2D}. This shows that the implemented 2D finite difference scheme (together with the way we handle boundary condition) has second order accuracy.
+\begin{figure}[H]
+    \includegraphics[width=16cm]{ss2D.png}
+    \centering
+    \caption{Steady state solution and $l_\infty$ error for the 2D test problem}
+    \label{fig:ss2D}
+\end{figure}
+
+\subsection{1.2 Time Integrator}
+\subsection{1.2.1 Forward Euler: von Neumann Stability Analysis}
+In this section, the stability restriction on time step for Forward Euler will be derived. Recall Forward Euler scheme for homogeneous equation $u_t = \Delta u$ in one dimension.
+\begin{align*}
+    u_{k,l+1} = u_{k,l} + h_t\frac{u_{k+1,l}-2u_{k,l}+u_{k-1,l}}{h_x^2}
+\end{align*}
+Where $h_t$ is time step size and $h_x$ is the grid size. Periodic boundary conditions is assumed. We will use von Neumann stability analysis to establish conditions under which this scheme is stable. First, rearrange the equation.
+\begin{align*}
+    u_{k,l+1} = \lambda u_{k+1,l} + (1-2\lambda) u_{k,l} + \lambda u_{k-1,l}
+\end{align*}
+Where $\lambda = h_t/h_x^2$. This scheme can be written as
+\begin{align*}
+    P_h\textbf{u}_l+1 = Q_h\textbf{u}_l
+\end{align*}
+where $\textbf{u}_l$ is the vector of the approximation at each grid point at time $l$. Elements of the vector are ordered such that adjacent element represent adjacent grid points.
+\begin{align*}
+    P_h = I, \quad\quad\quad Q_h=\text{tridiag}\left( \lambda, 1-2\lambda, \lambda  \right)
+\end{align*}
+Recall that $P_h$ and $Q_h$ are Toeplitz operator. The corresponding Toeplitz vector, $p_k$ and $q_k$ are given below.
+\begin{align*}
+    p_k =
+    \left\{
+    \begin{array}{ll}
+        1 & \mbox{if } k = 0  \\
+        0 & \mbox{otherwise }
+    \end{array}
+    \right. \quad\quad\quad
+    q_k =
+    \left\{
+    \begin{array}{ll}
+        \lambda    & \mbox{if } k = -1 \\
+        1-2\lambda & \mbox{if } k =  0 \\
+        \lambda    & \mbox{if } k =  1
+    \end{array}
+    \right.
+\end{align*}
+Apply discrete Fourier transform.
+\begin{align*}
+    \hat{\textbf{p}}(\varphi) & = \sum_{k}p_k e^{-i\varphi k} = e^{-i\varphi (0)} = 1                \\
+    %
+    \hat{\textbf{q}}(\varphi) & = \sum_{k}q_k e^{-i\varphi k}                                        \\
+                              & = \lambda  e^{-i\varphi (-1)}
+    + \left(  1 - 2\lambda \right)  e^{-i\varphi (0)}
+    + \lambda  e^{-i\varphi (1)}                                                                     \\
+    %
+                              & = \lambda \left( e^{-i\varphi} + e^{i\varphi} \right) + (1-2\lambda) \\
+                              & = \lambda \cos(\varphi) + (1-2\lambda)
+\end{align*}
+Check the first condition of \textit{von Neumann} stability. For some constant $c$ which is independent of $h_x$ and $h_t$,
+\begin{align*}
+    \max_\varphi \abs{\frac{1}{\hat{\textbf{p}}(\varphi)}} & =  \max_\varphi \abs{\frac{1}{1}} = 1 \le c
+\end{align*}
+Check the second condition of \textit{von Neumann} stability.
+\begin{align*}
+    \max_\varphi \abs{s(\varphi)}
+     & = \max_\varphi \abs{\frac{\hat{\textbf{q}}(\varphi)}{\hat{\textbf{p}}(\varphi)}  } \\
+     & = \max_\varphi \abs{\frac{\lambda \cos(\varphi) + (1-2\lambda)]}{1}}               \\
+     & = \max_\varphi \abs{\lambda \cos(\varphi) + (1-2\lambda)}
+\end{align*}
+We use the fact that $\max_\varphi \abs{s(\varphi)} = \max_\varphi \abs{s(\varphi)}^2$
+\begin{align*}
+    \max_\varphi \abs{s(\varphi)}^2
+     & = \max_\varphi \left( \lambda^2 \cos^2(\varphi) + 2\lambda(1-2\lambda)\cos(\varphi) + (1-2\lambda)^2  \right)
+\end{align*}
+To find the maximum, differentiate the expression inside the bracket with respect to $\varphi$ and find the zeros.
+\begin{align*}
+    -2\lambda^2\cos(\varphi)\sin(\varphi) - 2\lambda(1-2\lambda)\sin(\varphi) = 0
+\end{align*}
+The zeros of this equation is when $\sin(\varphi)=0$. When this happens, we can have $\cos(\varphi)=1$ or $\cos(\varphi)=-1$. First, we check the case when $\cos(\varphi)=1$.
+\begin{align*}
+    \max_\varphi \abs{s(\varphi)}^2                               & \le 1 \\
+    \lambda^2 + 2\lambda - 4\lambda^2 + 1 - 4\lambda + 4\lambda^2 & \le 1 \\
+    \lambda^2-2\lambda                                            & \le 0 \\
+    \lambda(\lambda-2)                                            & \le 0
+\end{align*}
+Since we are using positive step both in time and space, $\lambda>0$. To satisfy this condition,
+\begin{align*}
+    \lambda \le 2
+\end{align*}
+Next, we consider the case when $\cos(\varphi)=-1$.
+\begin{align*}
+    \max_\varphi \abs{s(\varphi)}^2                               & \le 1 \\
+    \lambda^2 - 2\lambda + 4\lambda^2 + 1 - 4\lambda + 4\lambda^2 & \le 1 \\
+    9\lambda^2-6\lambda                                           & \le 0 \\
+    3\lambda(3\lambda-2)                                          & \le 0
+\end{align*}
+To satisfy this condition,
+\begin{align*}
+    \lambda \le \frac{2}{3}
+\end{align*}
+Using the smaller bound, we find that
+\begin{align*}
+    h_t \le \frac{2}{3}h_x^2
+\end{align*}
+Notice that this is just for one dimension, we have the same scheme in the other dimension.
+\begin{align*}
+    h_t \le \frac{2}{3}h_y^2
+\end{align*}
+Summing these two,
+\begin{align*}
+    2h_t \le \frac{2}{3}h_x^2 + \frac{2}{3}h_y^2
+\end{align*}
+The final constrain in $h_t$ for the scheme to be stable is
+\begin{align*}
+    h_t \le \frac{1}{3} \left( h_x^2 + h_y^2 \right) \numberthis \label{ht}
+\end{align*}
+
+\subsection{1.2.2 Second Order Runge-Kutta}
+The implemented central difference is second order accurate. However, the accuracy of the solution of time depended problem also depends on accuracy of the time integrator. Forward Euler which is discussed in the previous section is only first order accurate. If we keep the proportion between time and space discretization $h_t/h_x^2=\text{constant}$, the local error will decrease with order $O(h_x^2)$. However, the global error that accumulate as we march through time is one order lower, $O(h_x)$. Because of this, even thought the space discretization is second order accurate, the combined scheme is only first order accurate. We can resolve this by setting $h_t$ to be proportional to $h_x^3$, but this may significantly increase the computational cost. A better way to resolve this issue is to use a second order scheme like second order Runge-Kutta.
+\begin{align*}
+    \frac{\partial u}{\partial t} & = f(t,u)                                 \\
+    k_1                           & = h_t f(t_l,u_l)                         \\
+    k_2                           & = h_t f(t_l+h_t,u_l+k_1)                 \\
+    u_{l+1}                       & = u_l + \frac{1}{2} \left(k_1+k_2\right)
+\end{align*}
+In our context,
+\begin{align*}
+    f(u,t) = \Delta u + r(x)
+\end{align*}
+Now we look at the time dependent version of the previous problem. The domain is $\Omega=[0,1]$.
+\begin{align*}
+    \Delta u(x,y,t) + r(x,y,t) & = u_t  \numberthis \label{heat_2D} \\
+    u(x,y,0)                   & = 0                                \\
+    u(x,0,t)=u(0,y,t)          & = 0                                \\
+    u_x(1,y,t)=u_y(x,1,t)      & = 0
+\end{align*}
+Consider the following solution
+\begin{align*}
+    u = 20\left(1-e^{-t}\right) (4x-x^4) (4y-y^4)
+\end{align*}
+Substitute this to \eqref{heat_2D} to get the corresponding heat source.
+\begin{align*}
+    r(x,y,t) = 240 & \left(1-e^{-t}\right) \left((x^2)(4y-y^4)+(4x-x^4)(y^2)\right) + 20e^{-t} (4x-x^4)(4y-y^4)
+\end{align*}
+Several different mesh size $h$ were used to solve the problem. Time step size $h_t=h^2/4$ will be used. The results is shown in Fig.\ref{fig:trans2D}. This shows that the implemented 2D finite difference scheme has second order accuracy.
+\begin{figure}[H]
+\includegraphics[width=16cm]{trans2D.png}
+\centering
+\caption{Transient solution at $t=0.5$ and $l_\infty$ error for the 2D test problem}
+\label{fig:trans2D}
+\end{}
+
+\subsection{1.3 Heat Flow in a Room}
+Finally we have all tools we need to simulate heat flow in a room. The heat flow will be modeled as a PDE \eqref{heat_eq} with initial and boundary conditions \eqref{ic}, \eqref{bc1}, \eqref{bc2}. The domain together with location of walls, windows, and heaters is given in Fig.\ref{fig:room_plan}. Let $S^{heat}$ be a set of grid points inside the heater. The heat source is defined as follow.
+\begin{align*}
+    r(x,y) =
+    \left\{
+    \begin{array}{ll}
+        120 & \mbox{$ x  \in  S^{heat} $} \\
+        0   & \mbox{otherwise}
+    \end{array}
+    \right.
+\end{align*}
+Grid size and time step size are $h=0.025$, $h_t=(h^2)/4=0.00015625$. The results are shown in Fig.\ref{fig:teRoom1}-\ref{fig:teRoom4}. The room plan overlay is also shown together with the temperature profile. Black is walls, blue is windows, and red is heaters.
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_ex_0.015625}.png}
+    \centering
+    \caption{Temperature profile at $t=0.015625$, with and without room plan overlay}
+    \label{fig:teRoom1}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_ex_0.937499}.png}
+    \centering
+    \caption{Temperature profile at $t=0.937499$, with and without room plan overlay}
+    \label{fig:teRoom2}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_ex_4.687499}.png}
+    \centering
+    \caption{Temperature profile at $t=4.687499$, with and without room plan overlay}
+    \label{fig:teRoom3}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_ex_31.99968}.png}
+    \centering
+    \caption{Temperature profile at $t=31.99968$, with and without room plan overlay}
+    \label{fig:teRoom4}
+\end{figure}
+
+\section{2. Implicit Solver, Steady-State Solution}
+\subsection{2.1 Diagonally Implicit Runge-Kutta Methods}
+In this section we will look into an implicit method. The advantage of using implicit method is that it is unconditionally stable. This gives us more freedom in choosing time step size because we do not have to worry about stability. The only restriction that we have in choosing the time step size comes from accuracy consideration. We will implement 2nd order, symplectic Diagonally Implicit Runge Kutta (DIRK) method form Qin and Zhang.
+\begin{align*}
+    \frac{\partial u}{\partial t} & = f(t,u)                                                                             \\
+    k_1                           & = f\left( t_l+\frac{1}{4}h_t , u_l + \frac{1}{4}h_t k_1 \right)                      \\
+    k_2                           & = f\left( t_l+\frac{3}{4}h_t , u_l + \frac{1}{2}h_t k_1 + \frac{1}{4}h_t k_2 \right) \\
+    u_{l+1}                       & = u_l + \frac{h_t}{2} \left(k_1+k_2\right)
+\end{align*}
+For the heat equation,
+\begin{align*}
+    f(t,u) = \Delta u + r
+\end{align*}
+Notice $k_1$ and $k_2$ are defined implicitly. Let $I$ be the identity operator and $L_h$ be the finite difference operator for $\Delta$. Derive the equation to solve for $k_1$.
+\begin{align*}
+    k_1                                    & = \Delta u_l + \frac{1}{4}h_t \Delta k_1 + r \\
+    \left(I-\frac{1}{4}h_t L_h \right) k_1 & = \left(L_h u_l + r\right)
+\end{align*}
+and for $k_2$.
+\begin{align*}
+    k_2                                    & = \Delta u_l + \frac{1}{2}h_t \Delta k_1 + \frac{1}{4}h_t \Delta k_2 + r \\
+    \left(I-\frac{1}{4}h_t L_h \right) k_2 & = \left(L_h u_l + \frac{1}{2}h_t \Delta k_1 + r\right)
+\end{align*}
+The same problem as in Section 1.3 will be solved with the implicit method. Grid size and time step size are $h=0.025$, $h_t=(h^2)*25=0.015625$. Notice that the time step $h_t$ is $100$ times larger that the time step that was used for explicit method. For simulating the heat flow until $t=32$, the computation time is four times faster compared to the explicit method. The results has good agreement with the results from explicit method. They are shown in Fig.\ref{fig:tiRoom1}-\ref{fig:tiRoom4}.
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_im_0.015625}.png}
+    \centering
+    \caption{Temperature profile at $t=0.015625$, with and without room plan overlay}
+    \label{fig:tiRoom1}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_im_0.937500}.png}
+    \centering
+    \caption{Temperature profile at $t=0.937499$, with and without room plan overlay}
+    \label{fig:tiRoom2}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_im_4.687500}.png}
+    \centering
+    \caption{Temperature profile at $t=4.687499$, with and without room plan overlay}
+    \label{fig:tiRoom3}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=12cm]{{transRoom_im_31.96875}.png}
+    \centering
+    \caption{Temperature profile at $t=31.99968$, with and without room plan overlay}
+    \label{fig:tiRoom4}
+\end{figure}
+
+\subsection{2.2 Steady State Solution}
+When we reach steady state, the solution does not change in time. This means $u_t=0$. So, we can solve the steady state directly by solving the poisson equation
+\begin{align*}
+    \Delta u + r = 0
+\end{align*}
+Solving the same setup as Section 1.3 and 2.1, with $u_t=0$ gives the steady state solution for heat flow in a room problem. The result is shown in Fig.\ref{fig:ssRoom}. This has a good match with Fig.\ref{fig:teRoom4} and Fig.\ref{fig:tiRoom4}. This means both of the previously performed transient simulations have reached steady state.
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{ssRoom}.png}
+    \centering
+    \caption{Steady state solution for heat flow in a room problem}
+    \label{fig:ssRoom}
+\end{figure}
+
+\subsection{2.3 Jacobi method}
+In this section we will implement Jacobi method to solve system of linear equations $Ax=b$ and use it to solve the steady state of heat flow in a room problem. Consider the discrete poisson equation
+\begin{align*}
+    L_h u = -r
+\end{align*}
+Where $L_h$ is the finite difference operator that approximate the laplace operator. $L_h$ can be decomposed into a diagonal component $D$, a lower triangular part $L$, and an upper triangular part $U$ such that
+\begin{align*}
+    L_h = D+L+U
+\end{align*}
+Jacobi is an iterative method. Starting with an initial guess, the next approximation $u^{(k+1)}$ is obtained by the following formula.
+\begin{align*}
+    u^{(k+1)} = D^{-1}\left(-r-(L+U)u^{(k)}\right)
+\end{align*}
+This can also be written as
+\begin{align*}
+    u^{(k+1)} = Tu^{(k)} + C
+\end{align*}
+where
+\begin{align*}
+    T & = -D^{-1}(L+U) \\
+    C & = -D^{-1}r
+\end{align*}
+The iteration will be stopped once the residual is less than the chosen tolerance $\varepsilon=10^{-8}$. The residual is computed as follows.
+\begin{align*}
+    Res = \Delta u + r \approx L_h u + r \numberthis \label{residual}
+\end{align*}
+A random initial guess for $200\x200$ grid points will be used to start the iteration. We will show the solution and error evolution at and up to iteration $300$ step. Then, we will run the simulation until we actually reached steady state. The results can be seen in Fig.\ref{fig:solJacobi} and Fig.\ref{fig:resJacobi}.
+\begin{figure}[H]
+    \includegraphics[width=8cm]{{plot_sol_jacobi}.png}
+    \centering
+    \caption{Solution at step 300 with Jacobi method}
+    \label{fig:solJacobi}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{plot_res_jacobi}.png}
+    \centering
+    \caption{Residual distribution and evolution at and up to step 300 with Jacobi method}
+    \label{fig:resJacobi}
+\end{figure}
+
+Looking at Fig.\ref{fig:solJacobi}, this looks like the early transient state of the heat flow. If we observe the evolution equation for Jacobi iteration, $u^{(k+1)} = Tu^{(k)} + C$, it does resemble an explicit time integrator. Recall that for Forward Euler, we have convergence criteria that the eigenvalue of the operator has to be inside the convergence region for the scheme to converge. This is analogous to Jacobi method, for convergence, the spectral radius $\rho \left(D^{-1}(L+U)\right)<1$. This condition is satisfied if the operator is strictly or irreducibly diagonally dominant. It is said (ref:wikipedia) that Jacobi does not converge for every symmetric positive definite matrix. Our operator ($-\Delta$) is symmetric and positive definite but for some reason in this case we got convergence. This probably is because of the shape of the domain, wall, and the way we treat Neumann boundary on the wall make the operator becomes not symmetric and positive definite anymore.
+
+\subsection{2.4 Damped Jacobi method}
+Let $\tilde{u}^{(k+1)}$ be the iterate computed by Jacobi at iteration $k+1$. For Damped Jacobi method, the iterative formula is
+\begin{align*}
+    u^{(k+1)} = \alpha u^{(k)} + (1-\alpha)\tilde{u}^{(k+1)}
+\end{align*}
+For an appropriately chosen small $\alpha$. We will do the same thing as before, show the solution and error evolution at and up to iteration $300$ step then run the simulation until we actually reached steady state. For this problem, we choose $\alpha=0.05$. The results can be seen in Fig.\ref{fig:solDJacobi} and Fig.\ref{fig:resDJacobi}.
+\begin{figure}[H]
+    \includegraphics[width=8cm]{{plot_sol_damped_jacobi}.png}
+    \centering
+    \caption{Solution at step 300 with damped Jacobi method}
+    \label{fig:solDJacobi}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{plot_res_damped_jacobi}.png}
+    \centering
+    \caption{Residual distribution and evolution at and up to step 300 with damped Jacobi method}
+    \label{fig:resDJacobi}
+\end{figure}
+Comparing Fig.\ref{fig:resJacobi} and Fig.\ref{fig:resDJacobi}, we can see that the residual distribution for damped Jacobi is "smoothen". The high residual also concentrate at the heat source where we have high gradient. This can be explained by decomposing the error $e^{(i)}$ into eigenvectors of poisson equation and determining the convergence factors for these eigenmodes. This way, it can be shown that the damped Jacobi reduce the high frequency part of the error more quickly compared to the Jacobi method. In contrast, the low frequency part decrease slower than the Jacobi method. However, since we are looking at the first 300 steps, the higher frequency error is still visible (see  Fig.\ref{fig:resJacobi}). As a results, the $l_{\infty}$ error norm for the damped Jacobi is smaller and the error distribution appear to be more smooth compared to Jacobi method.
+
+\section{3. Geometric Multigrid}
+\subsection{3.1 Restriction and Prolongation}
+In this section, "restriction" and "prolongation" operators will be constructed. They are operator that connect levels of meshes (with "restriction" going from fine to coarse, and prolongation the other way around). Both strategy will be tested against the same problem in section 1.1.5.
+
+\subsection{3.1.1 Restriction}
+Restriction operator allow us to go from finer mesh to coarser mesh. To do restriction, we simply picks values off the fine mesh at appropriate points (shown as green dot in Fig.\ref{fig:plot_restriction_strategy}).
+\begin{figure}[H]
+    \includegraphics[width=5cm]{{plot_restriction_strategy}.png}
+    \centering
+    \caption{Grid points and value taken from it to go to coarser level}
+    \label{fig:plot_restriction_strategy}
+\end{figure}
+This strategy will be tested. First, solve the same problem as in section 1.1.5 and restrict the solution. Next, we compute the residual of the restricted solution is computed using eq.\eqref{residual}. The results are shown in Fig.\ref{fig:plot_conv_restrict}.
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{plot_conv_restrict}.png}
+    \centering
+    \caption{Restricted solution and its convergence rate}
+    \label{fig:plot_conv_restrict}
+\end{figure}
+
+\subsection{3.1.2 Prolongation}
+Prolongation operator allows us to project the solution go from coarser mesh to finer mesh. First, we recall the poisson equation for steady state of heat flow and the second order central difference discretization on it evaluated at a point.
+\begin{align*}
+    0 & = \Delta u(x_i,y_j) + r(x_i,y_j)                                                                             \\
+    0 & = \frac{u_{i+1,j} -2u_{i,j} + u_{i-1,j}}{h_x^2} + \frac{u_{i,j+1} -2u_{i,j} + u_{i,j-1}}{h_y^2} + r(x_i,y_j)
+\end{align*}
+Solving this for $u_{i,j}$,
+\begin{align*}
+    u_{i,j} = \frac{1}{4} \left( u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} \right) + \frac{h^2}{4} r(x_i,y_j)
+\end{align*}
+We first apply this equation in the diagonal direction. In Fig.\ref{fig:plot_prolongation_strategy}, we compute the blue node from value from green nodes. Next, we can compute the value of the orange nodes using the same equation.
+\begin{figure}[H]
+    \includegraphics[width=5cm]{{plot_prolongation_strategy}.png}
+    \centering
+    \caption{Scheme for prolongation: from green nodes, compute values at blue nodes, then orange nodes, then red nodes}
+    \label{fig:plot_prolongation_strategy}
+\end{figure}
+At this points, we are ready to compute the value at the Dirichlet and Neumann boundary (red nodes on the Fig.\ref{fig:plot_prolongation_strategy}). The same treatment as in section 1.1.3 will be used for Neumann boundary conditions. We solve eq.\eqref{nb1} and eq.\eqref{nb2} by taking $u_i^{\prime\prime} + r = 0$ and $\alpha=0$ (assuming homogeneous Neumann BC). Applying this in both direction, we get the following.
+\begin{align*}
+    u_{i,j} & = u_{i+1,j} + r(x_i,y_j) \qquad \mbox{if ghost node is on the left}   \\
+    u_{i,j} & = u_{i-1,j} + r(x_i,y_j) \qquad \mbox{if ghost node is on the right}  \\
+    u_{i,j} & = u_{i,j+1} + r(x_i,y_j) \qquad \mbox{if ghost node is on the bottom} \\
+    u_{i,j} & = u_{i,j-1} + r(x_i,y_j) \qquad \mbox{if ghost node is on the top}
+\end{align*}
+Last, we ensure that we are imposing Dirichlet boundary condition by making the solution at corresponding nodes equal to zero. Now we are ready to test this strategy. To come up with function that solves the poisson equation, we solve the same problem in Section 1.1.5. Then we prolongate the solution and check the residual with eq.\eqref{residual}. The result is shown in Fig.\ref{fig:plot_conv_prolong}.
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{plot_conv_prolong}.png}
+    \centering
+    \caption{Prolongated solution and its convergence rate}
+    \label{fig:plot_conv_prolong}
+\end{figure}
+
+\subsection{3.2 Multigrid: V-Cycle}
+Using the restriction and prolongation operator, we implement a multigrid solver. We will use three level V-Cycle (two coarsening of the underlying mesh). Multigrid solver algorithm for two level V-Cycle is given below. To get three level, we simply apply the same algorithm when we solve the coarser mesh. Note that for this scheme, $r(i,j)$ will not be added when we prolongate the solution because we are adding the solution for residual to the original solution.
+\begin{itemize}
+    \item Perform three or so Jacobi smoothing on $A_h v_h=f_h$
+    \item Compute the residual $r_h = f_h - A_h v_h$
+    \item Compute the restricted residual $r_{2h}$ from $r_h$
+    \item Obtain a coarse-grid correction $c_{2h}$ approximating the solution of $A_{2h} c_{2h} = r_{2h}$
+    \item Prolongate the coarse-grid correction $c_{2h}$ to obtain $c_h$
+    \item Correct $v_h$ with $c_{2h}$: Let $w_h=v_h+c_h$
+    \item Perform three more rounds of Jacobi smoothing on $A_h v_h=f_h$ and return $w_h$
+\end{itemize}
+We will solve the heat flow in a room problem using this scheme. We run the scheme on a family of grids ($n=50$, $n=100$, $n=200$) until the residual norm has decreased by at least a factor of $10^{12}$. The solution is shown in Fig.\ref{fig:plot_sol_multigrid} and the revolution of residual is shown in Fig.\ref{fig:plot_res_multigrid}
+\begin{figure}[H]
+    \includegraphics[width=7cm]{{plot_res_multigrid}.png}
+    \centering
+    \caption{Residual evolution for the multigrid method}
+    \label{fig:plot_res_multigrid}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=16cm]{{plot_sol_multigrid}.png}
+    \centering
+    \caption{Solution of heat flow in a room problem with multigrid method}
+    \label{fig:plot_sol_multigrid}
+\end{figure}
+
+\section{A. How to Reproduce Results}
+On the uploaded code, starting at line 825, there are several commented function call. To run the simulation and recreate figures in the report, just un-comment the
+corresponding function and run the code.
+
+%
+
+\end{document}
