@@ -13,14 +13,15 @@ corresponding function and run the code.
 # Import library
 #=============================================================================#
 
+import time
+
+import matplotlib.pyplot as plt
+import meshpy.triangle as triangle
 import numpy as np
 import scipy.linalg as la
 import scipy.sparse as sparse
 import scipy.sparse.linalg as sla
-import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-import meshpy.triangle as triangle
-import time
 
 # from IPython import get_ipython;
 # get_ipython().magic('reset -sf')
@@ -120,7 +121,7 @@ def longest_edge(V,E):
 # Quadrature points
 ref_quad_weights = np.array(
          [0.44676317935602256, 0.44676317935602256, 0.44676317935602256,
-             0.21990348731064327, 0.21990348731064327, 0.21990348731064327])
+          0.21990348731064327, 0.21990348731064327, 0.21990348731064327])
 ref_quad_nodes = np.array([
     [-0.10810301816807008, -0.78379396366385990],
     [-0.10810301816806966, -0.10810301816807061],

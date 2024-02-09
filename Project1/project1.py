@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 #=============================================================================#
 # README
 #=============================================================================#
 
 """
 Starting at line 825, there are several commented function call. To run the
-simulation and recreate figures in the report, just uncomment the 
+simulation and recreate figures in the report, just uncomment the
 corresponding function and run the code.
 """
 
@@ -12,15 +13,13 @@ corresponding function and run the code.
 # Import library
 #=============================================================================#
 
-import scipy.sparse as sp
-import scipy.sparse.linalg as sppla
-import numpy as np
-import matplotlib.pyplot as plt
 import math as math
 import time
 
-from IPython import get_ipython;   
-get_ipython().magic('reset -sf')
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.sparse as sp
+import scipy.sparse.linalg as sppla
 
 #=============================================================================#
 # Function definition
@@ -156,7 +155,7 @@ def Conv2Dss():
     t = np.linspace(0.0104691,0.3,2)
     f1 = t*2000*0.1
     f2 = t**2*1000*0.01
-    # Plot 
+    # Plot
     xlist, ylist = np.meshgrid(x, y)
     z = np.reshape(u,(n,n))
     # z_true = np.reshape(u_true,(nx,ny))
@@ -220,13 +219,13 @@ def Conv2Dtrans():
                 r = r*(1-DBC)
                 k2 = ht*(Lh.dot(u+k1)+r)
                 # Final solution
-                u = u+(k1+k2)/2     
+                u = u+(k1+k2)/2
             # True solution
             u_true = 20*(1-np.exp(-t))*( np.kron( (4*y-y**4), (4*x-x**4) )  )
             # Norm of error
             err[k] = np.linalg.norm(u-u_true,np.inf)
             hv[k] = h
-    # Plot 
+    # Plot
     t = np.linspace(0.0104691,0.1,2)
     f1 = t*800*0.1
     f2 = t**2*800*0.01
@@ -276,13 +275,13 @@ def Room_BC_heatsource(x,y):
     size_xy = 5
     # Define Neumann boundary conditions
     NBC_xl = np.kron( (y==y), (x==0) ) | np.kron( (y>=3.39999)&(y<=3.600001), (x>1.49999)&(x<=1.500001) ) \
-                                       | np.kron( (y>=1.89999)&(y<=2.100001), (x>2.49999)&(x<=2.500001) )  
+                                       | np.kron( (y>=1.89999)&(y<=2.100001), (x>2.49999)&(x<=2.500001) )
     # print (np.sum(NBC_xl))
     NBC_xr = np.kron( (y==y), (x==size_xy) ) | np.kron( (y>=3.39999)&(y<=3.600001),(x>3.99999)&(x<=3.000001) )
     NBC_yb = np.kron( (y==0), (x==x) )  | np.kron( (y>3.59999)&(y<=3.600001), (x<=1.50001)|(x>=2.99999) ) \
-                                        | np.kron( (y>2.09999)&(y<=2.100001), (x<=2.50001) ) 
+                                        | np.kron( (y>2.09999)&(y<=2.100001), (x<=2.50001) )
     NBC_yt = np.kron( (y==size_xy), (x==x) )  | np.kron( (y>3.39999)&(y<=3.400001), (x<=1.50001)|(x>=2.99999) ) \
-                                              | np.kron( (y>1.80999)&(y<=1.900001), (x<=2.50001) )    
+                                              | np.kron( (y>1.80999)&(y<=1.900001), (x<=2.50001) )
     # Define Dirichlet boundary conditions
     DBC = np.kron( (y>=0.6)&(y<=1.4), (x==0) ) | np.kron( (y>=1.0)&(y<=2.0), (x==5.0) ) \
                                                | np.kron( (y>=4.0)&(y<=4.5), (x==0) ) \
@@ -296,7 +295,7 @@ def Room_BC_heatsource(x,y):
     # Modify r to include Dirichlet BC
     r = r*(1-DBC)
     return NBC_xl, NBC_xr, NBC_yb, NBC_yt, DBC, r
-        
+
 def setupRoom(n=201):
     size_xy = 5
     # Mesh setup
@@ -310,7 +309,7 @@ def setupRoom(n=201):
     return n, h, x, y, Lh, r
 
 def plotRoom(x,y,n,u,name):
-    # Plot 
+    # Plot
     xlist, ylist = np.meshgrid(x, y)
     z = np.reshape(u,(n,n))
     ft = 15
@@ -437,7 +436,7 @@ def Room_jacobi(nx=101, maxiter=300):
     rperr = np.reshape(perr,(n,n))
     z = np.reshape(u,(n,n))
     ft = 15
-    # Plot residual    
+    # Plot residual
     ResPlot = plt.figure()
     ResPlot.set_size_inches(12,4)
     plt.subplot(1, 2, 1)
@@ -485,7 +484,7 @@ def Room_damped_jacobi(alpha=0.05, nx=101, maxiter=300):
     rperr = np.reshape(perr,(n,n))
     z = np.reshape(u,(n,n))
     ft = 15
-    # Plot residual    
+    # Plot residual
     ResPlot = plt.figure()
     ResPlot.set_size_inches(12,4)
     plt.subplot(1, 2, 1)
@@ -553,7 +552,7 @@ def convRestrict():
     t = np.linspace(0.0104691,0.3,2)
     f1 = t*2000*0.1
     f2 = t**2*1000*0.01
-    # Plot 
+    # Plot
     xlist, ylist = np.meshgrid(x, y)
     z = np.reshape(u,(n,n))
     # z_true = np.reshape(u_true,(nx,ny))
@@ -601,7 +600,7 @@ def ConvProlong():
         # Solve u
         u = sppla.spsolve(-Lh, r)
         # Prolong
-        n2 = int(2*(n-1)+1) 
+        n2 = int(2*(n-1)+1)
         temp = np.reshape(u,(n,n))
         u = np.zeros((n2,n2))
         u[::2,::2] = temp
@@ -622,7 +621,7 @@ def ConvProlong():
         r = 240*( np.kron( (4*y-y**4), (x**2) ) + np.kron( (y**2), (4*x-x**4) ) )
         # Modify r to include Dirichlet BC
         r = r*(1-DBC)
-        n2 = int(2*(n-1)+1)    
+        n2 = int(2*(n-1)+1)
         Imat = sp.eye(n2)
         m1 = np.eye(n2)
         m1[1::2,1::2]=0
@@ -645,7 +644,7 @@ def ConvProlong():
             if (i+n2<n2**2):
                 m2[i,i+n2] = 0.25
         for i in range(0,n2**2,2):
-            m2[i,i] = 1 
+            m2[i,i] = 1
         for i in range(0,n2*n2):
             if NBC_xl[i]:
                 m2[i,:] = m2[i+1,:]
@@ -667,7 +666,7 @@ def ConvProlong():
     t = np.linspace(0.00504691,0.3,2)
     f1 = t*20000*0.1
     f2 = t**2*1000*0.01
-    # Plot 
+    # Plot
     xlist, ylist = np.meshgrid(x, y)
     z = np.reshape(u,(n2,n2))
     # z_true = np.reshape(u_true,(nx,ny))
@@ -701,7 +700,7 @@ def prolong(n,NBC_xl,NBC_xr,NBC_yb,NBC_yt,DBC):
     h = size_xy/(n2-1)
     # For heat source selection
     prolg = (h**2)/4*(u==0)
-    # Compute prolongation matrix   
+    # Compute prolongation matrix
     Imat = sp.eye(n2)
     m1 = np.eye(n2)
     m1[1::2,1::2]=0
@@ -724,7 +723,7 @@ def prolong(n,NBC_xl,NBC_xr,NBC_yb,NBC_yt,DBC):
         if (i+n2<n2**2):
             m2[i,i+n2] = 0.25
     for i in range(0,n2**2,2):
-        m2[i,i] = 1 
+        m2[i,i] = 1
     for i in range(0,n2*n2):
         if NBC_xl[i]:
             m2[i,:] = m2[i+1,:]
@@ -791,7 +790,7 @@ def Multigrid():
         u3b = np.zeros((n2,n2))
         u3b[::2,::2] = u3
         u3b = np.reshape(u3b,n2**2)
-        u2 = u2 + m3.dot(u3b) 
+        u2 = u2 + m3.dot(u3b)
         for i in range(3):
             u2 = alpha*u2 + (1-alpha)*(T2.dot(u2) + C2)
         # Prolongate to first level
@@ -799,7 +798,7 @@ def Multigrid():
         u2b = np.zeros((n1,n1))
         u2b[::2,::2] = u2
         u2b = np.reshape(u2b,n1**2)
-        u1 = u1 + m2.dot(u2b) 
+        u1 = u1 + m2.dot(u2b)
         for i in range(3):
             u1 = alpha*u1 + (1-alpha)*(T1.dot(u1) + C1)
         # Compute error
@@ -812,7 +811,7 @@ def Multigrid():
             break
     # Plot setup
     ft = 15
-    # Plot residual    
+    # Plot residual
     ResPlot = plt.figure()
     plt.semilogy(err)
     plt.xlabel('number of V-Cycle iteration', fontsize=ft)
@@ -827,7 +826,7 @@ def Multigrid():
 
 # Start measuring time needed to do simulation
 tic = time.perf_counter()
-    
+
 # Convergence test for 1D finite difference, steady state
 # Conv1Dss()
 
@@ -858,7 +857,7 @@ tic = time.perf_counter()
 
 # Room, steady state, damped Jacobi method
 # Room_damped_jacobi(alpha=0.05, nx=201, maxiter=300)
-  
+
 #=============================================================================#
 # Task 3
 #=============================================================================#
